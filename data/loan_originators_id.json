@@ -1,0 +1,29 @@
+{
+    "LoanOriginators": [
+        "Bino",
+        "Varks",
+        "AlfaKredyt",
+        "Tigo",
+        "Monego"
+    ],        
+
+    "Bino": {
+        "id": "33"
+    },
+    
+    "Varks": {
+        "id": "41"
+    },
+
+    "AlfaKredyt": {
+        "id": "50"
+    },
+
+    "Tigo": {
+        "id": "60"
+    },
+
+    "Monego": {
+        "id": "68"
+    }
+}

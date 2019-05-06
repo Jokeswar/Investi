@@ -1,0 +1,58 @@
+{
+    "LoanOriginators": [
+        "Bino",
+        "AlfaKredyt",
+        "Varks",
+        "Monego"
+    ],
+    "Bino": {
+        "additionalInformationRow": "2",
+        "additionalInformationOperation": "{} > {}",
+        "additionalInformationRequierement": "10",
+        "DTI": "0.18",
+        "wage": "794.00",
+        "country": "Latvia",
+        "mintosCountryName": "Latvia",
+        "currency": "EUR"
+    },
+    "AlfaKredyt": {
+        "additionalInformationRow": "2",
+        "additionalInformationOperation": "{} > {}",
+        "additionalInformationRequierement": "10",
+        "DTI": "0.25",
+        "wage": "1170.29",
+        "country": "Poland",
+        "mintosCountryName": "Poland",
+        "currency": "PLN"
+    },
+    "Varks": {
+        "additionalInformationRow": "0,0",
+        "additionalInformationOperation": "int('{}'.split(chr(44))[1][:-2].strip()) >= {},int('{}'.split(chr(44))[1][:-2].strip()) < {}",
+        "additionalInformationRequierement": "40,50",
+        "DTI": "0.16",
+        "wage": "327.98",
+        "country": "Armenia",
+        "mintosCountryName": "Armenia",
+        "currency": "AMD"
+    },
+    "Monego": {
+        "additionalInformationRow": "0,0",
+        "additionalInformationOperation": "int('{}'.split(chr(44))[1][:-2].strip()) >= {},int('{}'.split(chr(44))[1][:-2].strip()) < {}",
+        "additionalInformationRequierement": "40,50",
+        "DTI": "0.12",
+        "wage": "504.00",
+        "country": "Kosovo",
+        "mintosCountryName": "Kosovo",
+        "currency": "EUR"
+    },
+    "Tigo": {
+        "additionalInformationRow": "0,0",
+        "additionalInformationOperation": "int('{}'.split(chr(44))[1][:-2].strip()) >= {},int('{}'.split(chr(44))[1][:-2].strip()) < {}",
+        "additionalInformationRequierement": "40,50",
+        "DTI": "0.12",
+        "wage": "591.45",
+        "country": "Macedonia",
+        "mintosCountryName": "North Macedonia",
+        "currency": "MKD"
+    }
+}
