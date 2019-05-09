@@ -20,7 +20,7 @@ class Loan:
     daysDue = 0.0
     interestRate = 0.0
     amount = 0.0
-    amountaAvailable = 0.0
+    amountAvailable = 0.0
 
     def __init__(self, link, originator, daysDue, interestRate, amount, amav):
         self.link = link
@@ -28,10 +28,10 @@ class Loan:
         self.daysDue = daysDue
         self.interestRate = interestRate
         self.amount = amount
-        self.amountaAvailable = amav
+        self.amountAvailable = amav
 
     def __str__(self):
-        return "{} | Interest Rate: {}% | Days Due: {} | Originator: {} | Ammount: {} | Available: {}\n".format(self.link, self.interestRate, self.daysDue, self.originator, self.amount, self.amountaAvailable)
+        return "{} | Interest Rate: {}% | Days Due: {} | Originator: {} | Ammount: {} | Available: {}\n".format(self.link, self.interestRate, self.daysDue, self.originator, self.amount, self.amountAvailable)
 
 
 def GetInfoTable(link):

@@ -1,6 +1,7 @@
 import os
 import time
 import json
+from variabiles import *
 
 from mintos import Loan
 from mintos import analyze
@@ -9,14 +10,6 @@ from update import updateData
 from getpass import getpass
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-
-CHROMEDRV = os.path.abspath(os.curdir)
-BASELOGIN = "https://www.mintos.com/en/login"
-LOANSPAGE = "https://www.mintos.com/en/available-loans/primary-market/? \
-             currencies[]=978&statuses[]=256&pledges[]=8&with_buyback=1&invested_in=0& \
-             sort_field=interest&sort_order=DESC&max_results=20"
-CONFIRMIV = "https://www.mintos.com/en/review-investments/"
-LENDERSID = "data/loan_originators_id.json"
 
 
 def aproximate(number, precision):
@@ -62,6 +55,8 @@ def getLoanBook(driver):
     driver.get(buildLink())
 
     # get export button
+    # might need for the javascript to finish loading 
+    # all loans for the button to apear
     while True:
         try:
             exportBtn = driver.find_element_by_id("export-button")
@@ -97,6 +92,9 @@ def confirmInvestments(driver):
     driver.get(CONFIRMIV)
 
     time.sleep(1)
+
+    # NOTE:
+    # Not ready for fully automated investment confirmation
 
     # get button and click it
     # confirmBtn = driver.find_element_by_id("investment-confirm-button")
@@ -141,8 +139,8 @@ def invest(driver, loans):
     real_amount = aproximate(amount, 2) 
     rest_amount = balance - real_amount * (count - 1) # can't divide equally
     # aproximate(balance - real_amount * (count - 1), 2) <- old formula
-    # aproximation seems to not work sometimes, error of 1 EuroCent
    
+    # NOTE: 
     # On normal basis, and being sure that there are no bugs in the software and
     # that the strategy is correct you would uncomment confirmInvestments from 
     # the for below Also in confirmInvestments you should uncomment btn.click().
@@ -160,7 +158,7 @@ def invest(driver, loans):
                 confirmInvestments(driver)
                 break
 
-            if loan.amountaAvailable > real_amount + 1:
+            if loan.amountAvailable > real_amount + 1:
                 investInLoan(driver, loan.link, real_amount)
                 current += 1
 
@@ -168,24 +166,28 @@ def invest(driver, loans):
 def main():
     global CHROMEDRV
 
+    # Function that assings global variabiles their correct values
+    setVars()
+
     # getting userdata
-    us = input("Username: ")
-    ps = getpass()
+    username = input("Username: ")
+    password = getpass()
 
-    start = time.time()
+    start = time.time()    
 
-    # get path to drive and start chrome
-    if os.name == "posix":
-        CHROMEDRV = CHROMEDRV + "/driver/chromedriver"
-    else:
-        CHROMEDRV = CHROMEDRV + "\\driver\\chromedriver.exe"
-
-    driver = webdriver.Chrome(CHROMEDRV)
+    # starting chrome on automation mode
+    driver = webdriver.Chrome(CHROMEDRV, service_log_path = os.devnull)
     driver.minimize_window()
 
     # log in and remove credemtials from memory
-    login(driver, us, ps)
-    us = ps = ''
+    login(driver, username, password)
+    del username
+    del password
+
+    # if the account has no money there is no need to continue the process
+    currentBallance = getBalance(driver)
+    if currentBallance <= 0.0:
+        print("Your balance is 0\n Process will terminate")
 
     updateData()
     getLoanBook(driver)
@@ -193,11 +195,18 @@ def main():
     loans = analyze()
     invest(driver, loans)
 
+    # clean-up
     os.remove(LOANDATA)
+
+    # NOTE: 
+    # When the program will be fully capable of a well tested investment
+    # strategy maximize_windonw will be deleted. This is because at the moment 
+    # confirmations will be manual for verfication purpouses
+
     driver.maximize_window()
     # driver.quit()
+
     print("Execution lasted: {} s".format(time.time() - start))
-    return 0
 
 
 if __name__ == '__main__':
