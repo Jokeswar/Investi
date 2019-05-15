@@ -1,9 +1,9 @@
 import os
 import json
+import variabiles as var
 
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
-from mintos import JSONREQ
 
 CONV = "https://www.exchange-rates.org/converter/{}/EUR/{}/Y"
 BASE = "https://tradingeconomics.com"
@@ -35,7 +35,7 @@ def ConvertToEUR(amount, fromCurrency):
 
 
 def updateData():
-    with open(JSONREQ, 'r+') as f:
+    with open(var.GLOBALS["JSONREQ"], 'r+') as f:
         data = json.load(f)
         for loanOriginator in data["LoanOriginators"]:
             country = str(data[loanOriginator]["country"])

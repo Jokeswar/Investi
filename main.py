@@ -1,11 +1,10 @@
 import os
 import time
 import json
-from variabiles import *
+import variabiles as var
 
 from mintos import Loan
 from mintos import analyze
-from mintos import LOANDATA
 from update import updateData
 from getpass import getpass
 from selenium import webdriver
@@ -17,26 +16,21 @@ def aproximate(number, precision):
 
 
 def buildLink():
-    global LENDERSID
-    global LOANSPAGE
-
     baseString = "&lender_groups[]="
     link = ""
-    jsonFile = json.load(open(LENDERSID))
+    jsonFile = json.load(open(var.GLOBALS["LENDERSID"]))
 
     for loanOriginator in jsonFile["LoanOriginators"]:
         link += baseString + str(jsonFile[loanOriginator]["id"])
 
-    ret = LOANSPAGE + link
+    ret = var.GLOBALS["LOANSPAGE"] + link
 
     return ret.replace(" ", "")
 
 
 def login(driver, username, password):
-    global BASELOGIN
-
     # get login page
-    driver.get(BASELOGIN)
+    driver.get(var.GLOBALS["BASELOGIN"])
 
     # getting login fields
     loginName = driver.find_element_by_name("_username")
@@ -86,10 +80,8 @@ def investInLoan(driver, url, amount):
 
 
 def confirmInvestments(driver):
-    global CONFIRMIV
-
     # get page
-    driver.get(CONFIRMIV)
+    driver.get(var.GLOBALS["CONFIRMIV"])
 
     time.sleep(1)
 
@@ -108,13 +100,14 @@ def moveLoanBook():
     if os.name == "posix":
         pathToDownloadedFile = os.getenv("HOME") + "/Downloads/" + filename
     else:
-        pathToDownloadedFile = "C:" + os.getenv("HOMEPATH") + "\\Downloads\\" + filename
+        pathToDownloadedFile = "C:" + os.getenv("HOMEPATH") + "\\Downloads\\" +\
+                                filename
 
     # wait for file to download
     while(os.path.isfile(pathToDownloadedFile) is False):
         time.sleep(2)
 
-    os.rename(pathToDownloadedFile, LOANDATA)
+    os.rename(pathToDownloadedFile, var.GLOBALS["LOANDATA"])
 
 
 def getBalance(driver):
@@ -129,11 +122,6 @@ def invest(driver, loans):
     current = 0
     balance = getBalance(driver)
     count = int(balance / 10.0)
-
-    # no money no investment
-    if count <= 0:
-        print("Not enough funds available\nProcess will terminate")
-        return
 
     amount = balance / float(count)
     real_amount = aproximate(amount, 2) 
@@ -164,11 +152,6 @@ def invest(driver, loans):
 
 
 def main():
-    global CHROMEDRV
-
-    # Function that assings global variabiles their correct values
-    setVars()
-
     # getting userdata
     username = input("Username: ")
     password = getpass()
@@ -176,7 +159,8 @@ def main():
     start = time.time()    
 
     # starting chrome on automation mode
-    driver = webdriver.Chrome(CHROMEDRV, service_log_path = os.devnull)
+    driver = webdriver.Chrome(var.GLOBALS["CHROMEDRV"],\
+                              service_log_path = os.devnull)
     driver.minimize_window()
 
     # log in and remove credemtials from memory
@@ -185,9 +169,11 @@ def main():
     del password
 
     # if the account has no money there is no need to continue the process
+    time.sleep(0.5)
     currentBallance = getBalance(driver)
     if currentBallance <= 0.0:
-        print("Your balance is 0\n Process will terminate")
+        print("Your balance is 0\nProcess will terminate")
+        return
 
     updateData()
     getLoanBook(driver)
@@ -196,7 +182,7 @@ def main():
     invest(driver, loans)
 
     # clean-up
-    os.remove(LOANDATA)
+    os.remove(var.GLOBALS["LOANDATA"])
 
     # NOTE: 
     # When the program will be fully capable of a well tested investment
@@ -210,5 +196,6 @@ def main():
 
 
 if __name__ == '__main__':
+    var.init()
     main()
     input("Waiting for any key press to terminate....")
