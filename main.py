@@ -169,7 +169,7 @@ def main():
     del password
 
     # if the account has no money there is no need to continue the process
-    time.sleep(0.5)
+    time.sleep(1)
     currentBallance = getBalance(driver)
     if currentBallance <= 0.0:
         print("Your balance is 0\nProcess will terminate")

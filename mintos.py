@@ -8,7 +8,8 @@ from multiprocessing import Pool
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 
-INFOJSON = None
+
+infoJson = infoJson = json.load(open(os.path.join("data", "loan_originators_req.json")))
 
 
 class Loan:
@@ -56,11 +57,12 @@ def Pass(val, req, oper):
 
 
 def validate(loan):
+    global infoJson
     infoTable = GetInfoTable(loan.link)
 
-    operations = INFOJSON[loan.originator]["additionalInformationOperation"].split(",")
-    infoRequirements = INFOJSON[loan.originator]["additionalInformationRequierement"].split(",")
-    infoRows = INFOJSON[loan.originator]["additionalInformationRow"].split(",")
+    operations = infoJson[loan.originator]["additionalInformationOperation"].split(",")
+    infoRequirements = infoJson[loan.originator]["additionalInformationRequierement"].split(",")
+    infoRows = infoJson[loan.originator]["additionalInformationRow"].split(",")
 
     valid = True
     info = []
@@ -85,9 +87,7 @@ def validate(loan):
 
 
 def analyze():
-    global INFOJSON
-
-    INFOJSON = json.load(open(var.GLOBALS["JSONREQ"]))
+    infoJson = json.load(open(var.GLOBALS["JSONREQ"]))
 
     countryMaxInv = {}
     loans = []
@@ -96,10 +96,10 @@ def analyze():
     worksheet = workbook.active
 
     # Setting maximum loan amount for every country
-    for loanOriginator in INFOJSON["LoanOriginators"]:
-        wage = float(INFOJSON[loanOriginator]["wage"])
-        DTI = float(INFOJSON[loanOriginator]["DTI"]) # Debt to income
-        countryMaxInv[INFOJSON[loanOriginator]["mintosCountryName"]] = wage * DTI
+    for loanOriginator in infoJson["LoanOriginators"]:
+        wage = float(infoJson[loanOriginator]["wage"])
+        DTI = float(infoJson[loanOriginator]["DTI"]) # Debt to income
+        countryMaxInv[infoJson[loanOriginator]["mintosCountryName"]] = wage * DTI
 
     for rowN in range(2, worksheet.max_row):
         # Get necessary data
@@ -119,7 +119,7 @@ def analyze():
 
         daysDue = (dueDate - datetime.now()).days + 1
 
-        if loanOriginator in INFOJSON["LoanOriginators"]:
+        if loanOriginator in infoJson["LoanOriginators"]:
             if loanAmmount < countryMaxInv[country]:
                 link = "https://www.mintos.com/en/" + str(loanId)
                 newLoan = Loan(link, loanOriginator, daysDue, interestRate, loanAmmount, amountAvailable)
