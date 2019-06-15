@@ -12,7 +12,7 @@ def init():
     GLOBALS["LOANDATA"] = "loans.xlsx"
     GLOBALS["OUTPUTFILE"] = "loanList.txt"
     GLOBALS["BASELOGIN"] = "https://www.mintos.com/en/login"
-    GLOBALS["LOANSPAGE"] = "https://www.mintos.com/en/available-loans/\
+    GLOBALS["LOANSPAGE"] = "https://www.mintos.com/en/invest-en/\
                                primary-market/?currencies[]=978&statuses[]=256\
                                &pledges[]=8&with_buyback=1&invested_in=0&\
                                sort_field=interest&sort_order=DESC&\
