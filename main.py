@@ -29,6 +29,7 @@ def buildLink():
 
 
 def login(driver, username, password):
+    print("Logging in")
     # get login page
     driver.get(var.GLOBALS["BASELOGIN"])
 
@@ -42,12 +43,14 @@ def login(driver, username, password):
 
     # send data to server
     loginPass.send_keys(Keys.ENTER)
+    print("Logged in succesfully?")
 
 
 def getLoanBook(driver):
     # get loans page
     driver.get(buildLink())
 
+    print("Getting loan book")
     # get export button
     # might need for the javascript to finish loading 
     # all loans for the button to apear
@@ -96,6 +99,7 @@ def confirmInvestments(driver):
 def moveLoanBook():
     filename = time.strftime("%Y%m%d-primary-market.xlsx", time.gmtime())
 
+    print("Waiting for xlsx to download")
     # build download path
     if os.name == "posix":
         pathToDownloadedFile = os.getenv("HOME") + "/Downloads/" + filename
@@ -103,6 +107,7 @@ def moveLoanBook():
         pathToDownloadedFile = "C:" + os.getenv("HOMEPATH") + "\\Downloads\\" +\
                                 filename
 
+    print("Copping xlsx to current folder as loans.xlsx")
     # wait for file to download
     while(os.path.isfile(pathToDownloadedFile) is False):
         time.sleep(2)
@@ -142,13 +147,20 @@ def invest(driver, loans):
             if current == count - 1:
                 # if count != 1:
                     # confirmInvestments(driver)
-                investInLoan(driver, loan.link, rest_amount)
-                confirmInvestments(driver)
-                break
+                try:
+                    investInLoan(driver, loan.link, rest_amount)
+                    confirmInvestments(driver)
+                    break
+                except:
+                    pass
 
             if loan.amountAvailable > real_amount + 1:
-                investInLoan(driver, loan.link, real_amount)
-                current += 1
+                print(f"Investing in loan: {loan.link}")
+                try:
+                    investInLoan(driver, loan.link, real_amount)
+                    current += 1
+                except:
+                    pass
 
 
 def main():
@@ -178,9 +190,11 @@ def main():
     updateData()
     getLoanBook(driver)
     moveLoanBook()
+    print("Analyzing loans")
     loans = analyze()
     invest(driver, loans)
 
+    print("Clean up and quitting")
     # clean-up
     os.remove(var.GLOBALS["LOANDATA"])
 

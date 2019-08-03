@@ -1,5 +1,6 @@
 import os
 import json
+import time
 import openpyxl
 import variabiles as var
 
@@ -37,6 +38,7 @@ def GetInfoTable(link):
     req = Request(link, headers={'User-Agent': 'Mozilla/5.0'})
     html = urlopen(req).read()
     soup = BeautifulSoup(html, 'html.parser')
+    time.sleep(2)
 
     infoTable = soup.findAll("table", {"class": "value-table"})[-1].findChildren()[0]
     for tr in infoTable:
@@ -87,20 +89,25 @@ def validate(loan):
 
 
 def analyze():
+    print("Loading requirements")
     infoJson = json.load(open(var.GLOBALS["JSONREQ"]))
 
     countryMaxInv = {}
     loans = []
 
+    print("Loading loans")
     workbook = openpyxl.load_workbook(var.GLOBALS["LOANDATA"])
     worksheet = workbook.active
 
+    print("Setting maximum investment value per country")
     # Setting maximum loan amount for every country
     for loanOriginator in infoJson["LoanOriginators"]:
         wage = float(infoJson[loanOriginator]["wage"])
         DTI = float(infoJson[loanOriginator]["DTI"]) # Debt to income
         countryMaxInv[infoJson[loanOriginator]["mintosCountryName"]] = wage * DTI
 
+    print("Getting loan data and appending it to a list")
+    print(f"Number of loans to check: {worksheet.max_row-1}")
     for rowN in range(2, worksheet.max_row):
         # Get necessary data
         country = str(worksheet.cell(row=rowN, column=1).value)
@@ -129,6 +136,7 @@ def analyze():
 
     # output = open(OUTPUTFILE, "w")
 
+    print("Validating loans")
     with Pool(processes = os.cpu_count()) as pool:
         validatedLoans = pool.map(validate, loans)
 
@@ -139,3 +147,4 @@ def analyze():
     # output.close()
 
     return validatedLoans
+
