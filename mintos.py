@@ -35,10 +35,15 @@ class Loan:
 
 def GetInfoTable(link):
     result = []
-    req = Request(link, headers={'User-Agent': 'Mozilla/5.0'})
-    html = urlopen(req).read()
+    while True:
+        try:
+            req = Request(link, headers={'User-Agent': 'Mozilla/5.0'})
+            html = urlopen(req).read()
+            break
+        except:
+            print('Failed to retrieve info_table')
+    
     soup = BeautifulSoup(html, 'html.parser')
-    time.sleep(2)
 
     infoTable = soup.findAll("table", {"class": "value-table"})[-1].findChildren()[0]
     for tr in infoTable:
@@ -134,17 +139,17 @@ def analyze():
 
     loans.sort(key=lambda loan: (loan.interestRate, loan.daysDue), reverse=True)
 
-    # output = open(OUTPUTFILE, "w")
+    output = open('loans.txt', "w")
 
     print("Validating loans")
     with Pool(processes = os.cpu_count()) as pool:
         validatedLoans = pool.map(validate, loans)
 
-    # for loan in validatedLoans:
-    #     if loan != None:
-    #         output.write(str(loan))
+    for loan in validatedLoans:
+        if loan != None:
+            output.write(str(loan))
 
-    # output.close()
+    output.close()
 
     return validatedLoans
 

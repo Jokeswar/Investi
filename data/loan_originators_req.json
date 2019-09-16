@@ -10,7 +10,7 @@
         "additionalInformationOperation": "{} > {}",
         "additionalInformationRequierement": "7",
         "DTI": "0.2",
-        "wage": "791.00",
+        "wage": "806.00",
         "country": "Latvia",
         "mintosCountryName": "Latvia",
         "currency": "EUR"
@@ -20,7 +20,7 @@
         "additionalInformationOperation": "{} > {}",
         "additionalInformationRequierement": "7",
         "DTI": "0.25",
-        "wage": "1164.05",
+        "wage": "1105.38",
         "country": "Poland",
         "mintosCountryName": "Poland",
         "currency": "PLN"
@@ -30,7 +30,7 @@
         "additionalInformationOperation": "int('{}'.split(chr(44))[1][:-2].strip()) >= {},int('{}'.split(chr(44))[1][:-2].strip()) < {}",
         "additionalInformationRequierement": "40,50",
         "DTI": "0.18",
-        "wage": "339.97",
+        "wage": "356.06",
         "country": "Armenia",
         "mintosCountryName": "Armenia",
         "currency": "AMD"

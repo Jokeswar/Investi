@@ -11,7 +11,7 @@ def init():
     GLOBALS["JSONREQ"] = os.path.join("data", "loan_originators_req.json")
     GLOBALS["LOANDATA"] = "loans.xlsx"
     GLOBALS["OUTPUTFILE"] = "loanList.txt"
-    GLOBALS["BASELOGIN"] = "https://www.mintos.com/en/login"
+    GLOBALS["BASELOGIN"] = "https://www.mintos.com/en/"
     GLOBALS["LOANSPAGE"] = "https://www.mintos.com/en/invest-en/\
                                primary-market/?currencies[]=978&statuses[]=256\
                                &pledges[]=8&with_buyback=1&invested_in=0&\

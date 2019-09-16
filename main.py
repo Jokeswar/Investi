@@ -32,7 +32,13 @@ def login(driver, username, password):
     print("Logging in")
     # get login page
     driver.get(var.GLOBALS["BASELOGIN"])
+    time.sleep(1)
 
+    login_button = driver.find_element_by_id("header-login-button")
+    login_button.click()
+
+    time.sleep(10)
+    
     # getting login fields
     loginName = driver.find_element_by_name("_username")
     loginPass = driver.find_element_by_name("_password")
@@ -211,5 +217,6 @@ def main():
 
 if __name__ == '__main__':
     var.init()
-    main()
+    analyze()
+    # main()
     input("Waiting for any key press to terminate....")
