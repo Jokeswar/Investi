@@ -177,7 +177,7 @@ def main():
     start = time.time()    
 
     # starting chrome on automation mode
-    driver = webdriver.Chrome(var.GLOBALS["CHROMEDRV"],\
+    driver = webdriver.Chrome(var.GLOBALS["DRIVER"],\
                               service_log_path = os.devnull)
     driver.minimize_window()
 

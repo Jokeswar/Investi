@@ -24,8 +24,8 @@ def init():
 
     # get path to drive and start chrome
     if os.name == "posix":
-        driver = os.path.join(driver, "driver", "chromedriver")
+        driver = os.path.join(driver, "driver", "operadriver")
     else:
-        driver = os.path.join(driver, "driver", "chromedriver.exe")
+        driver = os.path.join(driver, "driver", "operadriver.exe")
 
-    GLOBALS["CHROMEDRV"] = driver
+    GLOBALS["DRIVER"] = driver
