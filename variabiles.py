@@ -1,7 +1,7 @@
 import os
 
 def init():
-    """ 
+    """
     Setting up the values for the global GLOBALS dictionary
     """
 
@@ -24,8 +24,8 @@ def init():
 
     # get path to drive and start chrome
     if os.name == "posix":
-        driver = os.path.join(driver, "driver", "operadriver")
+        driver = os.path.join(driver, "driver", "chromedriver")
     else:
-        driver = os.path.join(driver, "driver", "operadriver.exe")
+        driver = os.path.join(driver, "driver", "chromedriver.exe")
 
     GLOBALS["DRIVER"] = driver
