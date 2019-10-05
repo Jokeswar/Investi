@@ -145,11 +145,5 @@ def analyze():
     with Pool(processes = os.cpu_count()) as pool:
         validatedLoans = pool.map(validate, loans)
 
-    for loan in validatedLoans:
-        if loan != None:
-            output.write(str(loan))
-
-    output.close()
-
     return validatedLoans
 

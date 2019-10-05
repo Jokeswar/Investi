@@ -28,27 +28,12 @@ def buildLink():
     return ret.replace(" ", "")
 
 
-def login(driver, username, password):
+def login(driver):
     print("Logging in")
     # get login page
     driver.get(var.GLOBALS["BASELOGIN"])
-    time.sleep(1)
-
-    login_button = driver.find_element_by_id("header-login-button")
-    login_button.click()
-
-    time.sleep(10)
+    input()
     
-    # getting login fields
-    loginName = driver.find_element_by_name("_username")
-    loginPass = driver.find_element_by_name("_password")
-
-    # filling login fields
-    loginName.send_keys(username)
-    loginPass.send_keys(password)
-
-    # send data to server
-    loginPass.send_keys(Keys.ENTER)
     print("Logged in succesfully?")
 
 
@@ -170,22 +155,15 @@ def invest(driver, loans):
 
 
 def main():
-    # getting userdata
-    username = input("Username: ")
-    password = getpass()
-
-    start = time.time()    
-
     # starting chrome on automation mode
     driver = webdriver.Chrome(var.GLOBALS["CHROMEDRV"],\
                               service_log_path = os.devnull)
-    driver.minimize_window()
+    driver.maximize_window()
 
     # log in and remove credemtials from memory
-    login(driver, username, password)
-    del username
-    del password
+    login(driver)
 
+    start = time.time()
     # if the account has no money there is no need to continue the process
     time.sleep(1)
     currentBallance = getBalance(driver)
@@ -217,6 +195,5 @@ def main():
 
 if __name__ == '__main__':
     var.init()
-    analyze()
-    # main()
+    main()
     input("Waiting for any key press to terminate....")
