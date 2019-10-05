@@ -156,7 +156,7 @@ def invest(driver, loans):
 
 def main():
     # starting chrome on automation mode
-    driver = webdriver.Chrome(var.GLOBALS["CHROMEDRV"],\
+    driver = webdriver.Chrome(var.GLOBALS["DRIVER"],\
                               service_log_path = os.devnull)
     driver.maximize_window()
 

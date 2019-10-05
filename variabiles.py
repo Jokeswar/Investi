@@ -1,7 +1,7 @@
 import os
 
 def init():
-    """ 
+    """
     Setting up the values for the global GLOBALS dictionary
     """
 
@@ -28,4 +28,4 @@ def init():
     else:
         driver = os.path.join(driver, "driver", "chromedriver.exe")
 
-    GLOBALS["CHROMEDRV"] = driver
+    GLOBALS["DRIVER"] = driver
